@@ -12,3 +12,8 @@ output "sqs_queue_arn" {
     description = "SQS Arn"
     value       = aws_sqs_queue.jobs.arn
 }
+
+output "dlq_name" {
+    description = "DLQ Name"
+    value       = aws_sqs_queue.dlq.name
+}

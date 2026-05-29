@@ -56,8 +56,8 @@ resource "aws_wafv2_web_acl" "agentflow_waf" {
             sampled_requests_enabled   = true
     }
 }
-
-resource "aws_wafv2_web_acl_association" "agentflow" {
-    resource_arn = var.api_gateway_arn
-    web_acl_arn  = aws_wafv2_web_acl.agentflow_waf.arn
 }
+
+# WAF Web ACL Association removed — aws_wafv2_web_acl_association does not support
+# API Gateway v2 HTTP APIs. In production this WAF would be associated via CloudFront
+# sitting in front of API Gateway. See README for architecture note.
