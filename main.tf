@@ -20,8 +20,8 @@ module "waf" {
 
 module "jobflow" {
     source = "./modules/jobflow"
-    
      project_name = var.project_name
+     dynamodb_table_arn = module.database.dynamodb_table_arn
 }
 
 module "database" {

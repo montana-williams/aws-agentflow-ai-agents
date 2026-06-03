@@ -3,3 +3,8 @@ variable "project_name" {
     type        = string
     default     = "agentflow"
 }
+
+variable "dynamodb_table_arn" {
+    description = "ARN for dynamodb table"
+    type        = string
+}
