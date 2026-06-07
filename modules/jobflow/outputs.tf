@@ -17,3 +17,13 @@ output "dlq_name" {
     description = "DLQ Name"
     value       = aws_sqs_queue.dlq.name
 }
+
+output "lambda_1_invoke_arn" {
+  description = "Lambda 1 invoke ARN"
+  value       = aws_lambda_function.lambda_1.invoke_arn
+}
+
+output "lambda_1_function_name" {
+  description = "Lambda 1 function name"
+  value       = aws_lambda_function.lambda_1.function_name
+}

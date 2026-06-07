@@ -13,3 +13,13 @@ variable "project_name" {
     type        = string
     default     = "agentflow"
 }
+
+variable "lambda_1_invoke_arn" {
+  description = "Lambda 1 invoke ARN for API Gateway integration"
+  type        = string
+}
+
+variable "lambda_1_function_name" {
+  description = "Lambda 1 function name for API Gateway permission"
+  type        = string
+}

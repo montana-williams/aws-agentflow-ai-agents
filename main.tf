@@ -8,6 +8,8 @@ module "api_gateway" {
     source = "./modules/api_gateway"
     user_pool_id = module.auth.user_pool_id
     user_pool_client_id = module.auth.user_pool_client_id
+    lambda_1_invoke_arn = module.jobflow.lambda_1_invoke_arn
+    lambda_1_function_name = module.jobflow.lambda_1_function_name
 
     project_name = var.project_name
 }
