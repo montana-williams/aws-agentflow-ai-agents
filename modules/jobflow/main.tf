@@ -72,6 +72,38 @@ resource "aws_iam_role_policy" "lambda_1_dynamodb" {
   })
 }
 
+resource "aws_iam_role" "lambda_status_role" {
+    name = "${var.project_name}-lambda-status-role"
+    assume_role_policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [{
+            Action = "sts:AssumeRole"
+            Effect = "Allow"
+            Principal = {
+                Service = "lambda.amazonaws.com"
+            }
+        }]
+    })
+}
+
+resource "aws_iam_role_policy" "lambda_status_dynamodb" {
+    name = "${var.project_name}-lambda_status_dynamodb"
+    role = aws_iam_role.lambda_status_role.name
+    policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+        Action = "dynamodb:GetItem"
+        Effect = "Allow"
+        Resource = var.dynamodb_table_arn
+        }]
+    })
+}
+
+resource "aws_iam_role_policy_attachment"  "lambda_status_basic" {
+    role = aws_iam_role.lambda_status_role.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_1_basic" {
   role       = aws_iam_role.lambda_1_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
@@ -155,6 +187,22 @@ resource "aws_lambda_function" "lambda_2" {
   function_name = "${var.project_name}-lambda-2"
   role          = aws_iam_role.lambda_2_role.arn
   handler       = "lambda2.handler"
+
+  runtime = "python3.11"
+
+  environment {
+    variables = {
+      ENVIRONMENT = "dev"
+      LOG_LEVEL   = "INFO"
+    }
+  }
+}
+
+resource "aws_lambda_function" "lambda_status" {
+  filename      = "lambda/lambdastatus.zip"
+  function_name = "${var.project_name}-lambda-status"
+  role          = aws_iam_role.lambda_status_role.arn
+  handler       = "lambdastatus.handler"
 
   runtime = "python3.11"
 

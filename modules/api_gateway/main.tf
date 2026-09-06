@@ -44,6 +44,29 @@ resource "aws_lambda_permission" "api_gateway" {
   source_arn    = "${aws_apigatewayv2_api.agentflow_api_gateway.execution_arn}/*/*"
 }
 
+resource "aws_apigatewayv2_integration" "lambda_status" {
+  api_id                 = aws_apigatewayv2_api.agentflow_api_gateway.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = var.lambda_status_invoke_arn
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "status" {
+  api_id             = aws_apigatewayv2_api.agentflow_api_gateway.id
+  route_key          = "GET /jobs/{jobId}"
+  target             = "integrations/${aws_apigatewayv2_integration.lambda_status.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.agentflow_authorizer.id
+}
+
+resource "aws_lambda_permission" "api_gateway_status" {
+  statement_id  = "AllowAPIGatewayInvokeStatus"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_status_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.agentflow_api_gateway.execution_arn}/*/*"
+}
+
 data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}

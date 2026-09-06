@@ -27,3 +27,12 @@ output "lambda_1_function_name" {
   description = "Lambda 1 function name"
   value       = aws_lambda_function.lambda_1.function_name
 }
+
+output "lambda_status_invoke_arn" {
+    description = "Lambda Status invoke ARN"
+    value       = aws_lambda_function.lambda_status.invoke_arn
+}
+output "lambda_status_function_name" {
+    description = "Lambda Status function name"
+    value       = aws_lambda_function.lambda_status.function_name
+}
