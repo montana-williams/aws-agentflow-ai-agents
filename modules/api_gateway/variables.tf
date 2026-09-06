@@ -23,3 +23,13 @@ variable "lambda_1_function_name" {
   description = "Lambda 1 function name for API Gateway permission"
   type        = string
 }
+
+variable "lambda_status_invoke_arn" {
+  description = "Lambda Status invoke ARN for API Gateway integration"
+  type        = string
+}
+
+variable "lambda_status_function_name" {
+  description = "Lambda Status function name for API Gateway permission"
+  type        = string
+}

@@ -5,37 +5,39 @@ module "auth" {
 }
 
 module "api_gateway" {
-    source = "./modules/api_gateway"
-    user_pool_id = module.auth.user_pool_id
-    user_pool_client_id = module.auth.user_pool_client_id
-    lambda_1_invoke_arn = module.jobflow.lambda_1_invoke_arn
-    lambda_1_function_name = module.jobflow.lambda_1_function_name
+  source                      = "./modules/api_gateway"
+  user_pool_id                = module.auth.user_pool_id
+  user_pool_client_id         = module.auth.user_pool_client_id
+  lambda_1_invoke_arn         = module.jobflow.lambda_1_invoke_arn
+  lambda_1_function_name      = module.jobflow.lambda_1_function_name
+  lambda_status_invoke_arn    = module.jobflow.lambda_status_invoke_arn
+  lambda_status_function_name = module.jobflow.lambda_status_function_name
 
-    project_name = var.project_name
+  project_name = var.project_name
 }
 
 module "waf" {
-    source = "./modules/waf"
+  source = "./modules/waf"
 
-    project_name = var.project_name
+  project_name = var.project_name
 }
 
 module "jobflow" {
-    source = "./modules/jobflow"
-     project_name = var.project_name
-     dynamodb_table_arn = module.database.dynamodb_table_arn
+  source             = "./modules/jobflow"
+  project_name       = var.project_name
+  dynamodb_table_arn = module.database.dynamodb_table_arn
 }
 
 module "database" {
-    source = "./modules/database"
+  source = "./modules/database"
 
-    project_name = var.project_name
+  project_name = var.project_name
 }
 
 module "monitoring" {
-    source = "./modules/monitoring"
-    dlq_name = module.jobflow.dlq_name
-    alert_email = var.alert_email
+  source      = "./modules/monitoring"
+  dlq_name    = module.jobflow.dlq_name
+  alert_email = var.alert_email
 
-    project_name = var.project_name
+  project_name = var.project_name
 }
